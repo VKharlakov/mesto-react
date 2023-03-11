@@ -1,7 +1,7 @@
 class Api {
-    constructor({baseUrl, key}){
+    constructor({ baseUrl, headers }) {
         this._url = baseUrl;
-        this._key = key
+        this._headers = headers
     }
 
     _returnResponse(res) {
@@ -14,112 +14,94 @@ class Api {
 
     //Получение данных о пользователе
     getUserInfo() {
-        return fetch (`${this._url}/users/me`, {
+        return fetch(`${this._url}/users/me`, {
             method: 'GET',
-            headers: {
-                authorization: this._key
-            }
+            headers: this._headers
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Изменение данных пользователя
     patchUserInfo(data) {
         return fetch(`${this._url}/users/me`, {
             method: 'PATCH',
-            headers: {
-                authorization: this._key,
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 name: data.name,
                 about: data.brief
             })
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Изменение аватара пользователя
     editUserAvatar(data) {
         return fetch(`${this._url}/users/me/avatar`, {
             method: 'PATCH',
-            headers: {
-                authorization: this._key,
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 avatar: data.avatar,
             })
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Получение списка изначальных фотографий
     getInitialCardSet() {
-        return fetch (`${this._url}/cards`, {
+        return fetch(`${this._url}/cards`, {
             method: 'GET',
-            headers: {
-                authorization: this._key
-            }
+            headers: this._headers
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Отправка новой фотографии
     postNewCard(data) {
         return fetch(`${this._url}/cards`, {
             method: 'POST',
-            headers: {
-                authorization: this._key,
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers,
             body: JSON.stringify({
                 name: data.name,
                 link: data.link,
             })
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Удаление фотографии
     deleteCard(cardId) {
         return fetch(`${this._url}/cards/${cardId}`, {
             method: 'DELETE',
-            headers: {
-                authorization: this._key,
-            },
+            headers: this._headers
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Добавление нового значения кнопки "Оценить"
     putLike(data) {
         return fetch(`${this._url}/cards/likes/${data._id}`, {
             method: 'PUT',
-            headers: {
-                authorization: this._key,
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 
     //Удаление нового значения кнопки "Оценить"
     deleteLike(data) {
         return fetch(`${this._url}/cards/likes/${data._id}`, {
             method: 'DELETE',
-            headers: {
-                authorization: this._key,
-                'Content-Type': 'application/json'
-            },
+            headers: this._headers
         })
-        .then((res) => this._returnResponse(res))
+            .then((res) => this._returnResponse(res))
     }
 }
 
 const api = new Api({
     baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-58',
-    key: 'd568102e-76f6-4f9a-a85b-ebd98d4aaf86'
+    headers: {
+        authorization: 'd568102e-76f6-4f9a-a85b-ebd98d4aaf86',
+        'Content-Type': 'application/json'
+    }
 })
 
 export default api

@@ -1,10 +1,12 @@
 import React from "react";
 
+const date = new Date()
+
 function Footer() {
     return (
-    <footer className="footer">
-        <p className="footer__copyright">&copy;&nbsp;2022 Mesto Russia // Kharlakov Vitaly</p>
-    </footer>
+        <footer className="footer">
+            <p className="footer__copyright">&copy;&nbsp;{`${date.getFullYear()} Mesto Russia // Kharlakov Vitaly`}</p>
+        </footer>
     )
 }
 

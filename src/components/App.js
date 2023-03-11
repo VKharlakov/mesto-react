@@ -22,30 +22,32 @@ function App() {
   return (
     <div className="page">
       <Header />
-      <Main 
+      <Main
         onEditProfile={setIsEditProfilePopupOpen}
         onAddPlace={setIsAddPlacePopupOpen}
         onEditAvatar={setIsEditAvatarPopupOpen}
         onCardClick={setSelectedCard}
       />
       <Footer />
-      
+
       {/* <!-- Окно редактирования информации пользователя --> */}
-      <PopupWithForm 
+      <PopupWithForm
         name="edit-profile"
         title="Редактировать профиль"
+        buttonText="Сохранить"
         isOpen={isEditProfilePopupOpen}
         onClose={closeAllPopups}>
         <input className="popup__input popup__input_type_name" id="input-name" placeholder="Введите имя" name="name" minLength="2" maxLength="40" type="text" required />
         <span id="input-name-error" className="popup__error-hint" />
-        <input className="popup__input popup__input_type_brief" id="input-brief"placeholder="Опишите себя" name="brief" minLength="2" maxLength="200" type="text" required />
+        <input className="popup__input popup__input_type_brief" id="input-brief" placeholder="Опишите себя" name="brief" minLength="2" maxLength="200" type="text" required />
         <span id="input-brief-error" className="popup__error-hint" />
       </PopupWithForm>
 
       {/* <!-- Окно добавления фотографий --> */}
-      <PopupWithForm 
+      <PopupWithForm
         name="add-photos"
         title="Новое место"
+        buttonText="Добавить"
         isOpen={isAddPlacePopupOpen}
         onClose={closeAllPopups}>
         <input className="popup__input popup__input_type_photo-title" placeholder="Введите название места" name="name" id="mesto-name" minLength="2" maxLength="30" type="text" required />
@@ -55,9 +57,10 @@ function App() {
       </PopupWithForm>
 
       {/* <!-- Окно редактирования аватара пользователя --> */}
-      <PopupWithForm 
+      <PopupWithForm
         name="edit-profile-avatar"
         title="Обновить аватар"
+        buttonText="Обновить"
         isOpen={isEditAvatarPopupOpen}
         onClose={closeAllPopups}>
         <input className="popup__input popup__input_type_photo-link" placeholder="Ссылка на фотографию" name="avatar" id="avatar-link" type="url" required />
@@ -65,18 +68,19 @@ function App() {
       </PopupWithForm>
 
       {/* <!-- Окно с полноэкранным режимом фотографий --> */}
-      <ImagePopup 
+      <ImagePopup
         card={selectedCard}
         onClose={closeAllPopups}
       />
 
       {/* <!-- Окно подтверждения удаления фотографии --> */}
-      <PopupWithForm 
+      <PopupWithForm
         name="delete-confirmation"
         title="Вы точно хотите удалить?"
+        buttonText="Да"
       />
-      
-	  </div>
+
+    </div>
   );
 }
 
