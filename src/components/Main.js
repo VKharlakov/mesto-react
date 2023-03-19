@@ -15,7 +15,8 @@ function Main(props) {
                     name: card.name,
                     link: card.link,
                     likes: card.likes,
-                    id: card._id
+                    id: card._id,
+                    owner_id: card.owner._id
                 })))
             })
             .catch((err) => console.log(err))
@@ -41,9 +42,10 @@ function Main(props) {
                         <Card
                             name={card.name}
                             link={card.link}
-                            likes={card.likes.length}
+                            likes={card.likes}
                             key={card.id}
                             onCardClick={props.onCardClick}
+                            owner_id={card.owner_id}
                         />
                     ))}
                 </ul>
