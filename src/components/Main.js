@@ -1,22 +1,14 @@
 import React from "react";
+import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import api from "../utils/api";
 import Card from "./Card";
 
 function Main(props) {
-    const [userName, setUserName] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userAvatar, setUserAvatar] = React.useState('');
     const [cards, setCards] = React.useState([]);
 
-    React.useEffect(() => {
-        api.getUserInfo()
-            .then((userData) => {
-                setUserName(userData.name)
-                setUserDescription(userData.about)
-                setUserAvatar(userData.avatar)
-            })
-            .catch((err) => console.log(err))
+    const currentUser = React.useContext(CurrentUserContext)
 
+    React.useEffect(() => {
         api.getInitialCardSet()
             .then((cardList) => {
                 setCards(cardList.map((card) => ({
@@ -33,13 +25,13 @@ function Main(props) {
         <main className="content">
             <section className="profile">
                 <div className="profile__avatar-container">
-                    <img className="profile__avatar" src={userAvatar} alt="Ваш аватар" />
+                    <img className="profile__avatar" src={currentUser.avatar} alt="Ваш аватар" />
                     <button className="profile__edit-avatar-button" onClick={() => { props.onEditAvatar(true) }} />
                 </div>
                 <div className="profile__info">
-                    <h1 className="profile__name">{userName}</h1>
+                    <h1 className="profile__name">{currentUser.name}</h1>
                     <button className="profile__edit-button" id="btn-show-edit-profile-form" type="button" aria-label="Редактировать профиль" name="EditProfile" onClick={() => { props.onEditProfile(true) }} />
-                    <p className="profile__brief">{userDescription}</p>
+                    <p className="profile__brief">{currentUser.about}</p>
                 </div>
                 <button className="profile__add-button" id="btn-show-add-photos-form" type="button" aria-label="Добавить" name="AddPhotos" onClick={() => { props.onAddPlace(true) }} />
             </section>
