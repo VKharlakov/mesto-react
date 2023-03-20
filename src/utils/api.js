@@ -77,19 +77,10 @@ class Api {
             .then((res) => this._returnResponse(res))
     }
 
-    //Добавление нового значения кнопки "Оценить"
-    putLike(data) {
-        return fetch(`${this._url}/cards/likes/${data._id}`, {
-            method: 'PUT',
-            headers: this._headers
-        })
-            .then((res) => this._returnResponse(res))
-    }
-
-    //Удаление нового значения кнопки "Оценить"
-    deleteLike(data) {
-        return fetch(`${this._url}/cards/likes/${data._id}`, {
-            method: 'DELETE',
+    //Изменение статуса кнопки "Оценить"
+    changeLikeCardStatus(id, isLiked) {
+        return fetch(`${this._url}/cards/${id}/likes`, {
+            method: `${isLiked ? 'PUT' : 'DELETE'}`,
             headers: this._headers
         })
             .then((res) => this._returnResponse(res))
