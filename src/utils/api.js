@@ -28,7 +28,7 @@ class Api {
             headers: this._headers,
             body: JSON.stringify({
                 name: data.name,
-                about: data.brief
+                about: data.about
             })
         })
             .then((res) => this._returnResponse(res))

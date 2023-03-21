@@ -6,7 +6,10 @@ import Main from './Main';
 import PopupWithForm from './PopupWithForm';
 import ImagePopup from './ImagePopup';
 import api from "../utils/api";
+import EditProfilePopup from './EditProfilePopup'
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
 
 function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = React.useState(false);
@@ -39,6 +42,31 @@ function App() {
       .catch((err) => console.log(err))
   }, [])
 
+  function handleUpdateUser(newUserData) {
+    api.patchUserInfo(newUserData)
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
+  }
+
+  function handleUpdateAvatar(newUserAvatar) {
+    api.editUserAvatar(newUserAvatar)
+      .then((data) => {
+        setCurrentUser(data)
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
+  }
+
+  function handleAddPlace(newPlace) {
+    api.postNewCard(newPlace)
+    .then((data) => {
+      setCards([data, ...cards])
+      closeAllPopups()
+    })
+  }
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false)
@@ -85,41 +113,22 @@ function App() {
         <Footer />
 
         {/* <!-- Окно редактирования информации пользователя --> */}
-        <PopupWithForm
-          name="edit-profile"
-          title="Редактировать профиль"
-          buttonText="Сохранить"
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
-          onClose={closeAllPopups}>
-          <input className="popup__input popup__input_type_name" id="input-name" placeholder="Введите имя" name="name" minLength="2" maxLength="40" type="text" required />
-          <span id="input-name-error" className="popup__error-hint" />
-          <input className="popup__input popup__input_type_brief" id="input-brief" placeholder="Опишите себя" name="brief" minLength="2" maxLength="200" type="text" required />
-          <span id="input-brief-error" className="popup__error-hint" />
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser} />
 
         {/* <!-- Окно добавления фотографий --> */}
-        <PopupWithForm
-          name="add-photos"
-          title="Новое место"
-          buttonText="Добавить"
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups}>
-          <input className="popup__input popup__input_type_photo-title" placeholder="Введите название места" name="name" id="mesto-name" minLength="2" maxLength="30" type="text" required />
-          <span className="popup__error-hint" id="mesto-name-error" />
-          <input className="popup__input popup__input_type_photo-link" placeholder="Ссылка на фотографию" name="link" id="mesto-link" type="url" required />
-          <span className="popup__error-hint" id="mesto-link-error" />
-        </PopupWithForm>
+          onClose={closeAllPopups} 
+          onAddPlace={handleAddPlace} />
 
         {/* <!-- Окно редактирования аватара пользователя --> */}
-        <PopupWithForm
-          name="edit-profile-avatar"
-          title="Обновить аватар"
-          buttonText="Обновить"
+        <EditAvatarPopup
           isOpen={isEditAvatarPopupOpen}
-          onClose={closeAllPopups}>
-          <input className="popup__input popup__input_type_photo-link" placeholder="Ссылка на фотографию" name="avatar" id="avatar-link" type="url" required />
-          <span className="popup__error-hint" id="avatar-link-error" />
-        </PopupWithForm>
+          onClose={closeAllPopups}
+          onUpdateAvatar={handleUpdateAvatar} />
 
         {/* <!-- Окно с полноэкранным режимом фотографий --> */}
         <ImagePopup

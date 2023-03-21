@@ -9,7 +9,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
         `elements__like-button ${isLiked && 'elements__like-button_active'}` 
       );
       const cardDeleteButtonClassName = (
-        `elements__delete-button ${!isLiked && 'elements__delete-button_hidden'}`
+        `elements__delete-button ${!isOwn && 'elements__delete-button_hidden'}`
       )
 
     function handleCardClick() {
@@ -26,7 +26,7 @@ function Card({card, onCardClick, onCardLike, onCardDelete}) {
 
     return (
         <li className="elements__element">
-            {isOwn && <button className={cardDeleteButtonClassName} type="button" aria-label="Удалить" onClick={handleDeleteClick}/>}
+            <button className={cardDeleteButtonClassName} type="button" aria-label="Удалить" onClick={handleDeleteClick}/>
             <img className="elements__photo" src={card.link} alt={card.name} onClick={handleCardClick} />
             <div className="elements__info">
                 <h2 className="elements__title">{card.name}</h2>
