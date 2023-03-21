@@ -20,8 +20,6 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState({})
   const [cards, setCards] = React.useState([]);
 
-
-
   React.useEffect(() => {
     api.getUserInfo()
       .then((userData) => {
@@ -31,13 +29,14 @@ function App() {
 
     api.getInitialCardSet()
       .then((cardList) => {
-        setCards(cardList.map((card) => ({
+        setCards(cardList)
+        cards.map((card) => ({
           name: card.name,
           link: card.link,
           likes: card.likes,
           _id: card._id,
-          owner_id: card.owner._id
-        })))
+          owner: card.owner
+        }))
       })
       .catch((err) => console.log(err))
   }, [])
@@ -62,10 +61,11 @@ function App() {
 
   function handleAddPlace(newPlace) {
     api.postNewCard(newPlace)
-    .then((data) => {
-      setCards([data, ...cards])
-      closeAllPopups()
-    })
+      .then((data) => {
+        setCards([data, ...cards])
+        closeAllPopups()
+      })
+      .catch((err) => console.log(err))
   }
 
   function closeAllPopups() {
@@ -90,7 +90,7 @@ function App() {
   function handleCardDelete(card) {
     api.deleteCard(card._id)
       .then(() => {
-        setCards(() => cards.filter(item => item._id != (card._id)))
+        setCards((state) => state.filter(item => item._id !== (card._id)))
       })
       .catch((err) => {
         console.log(err);
@@ -121,7 +121,7 @@ function App() {
         {/* <!-- Окно добавления фотографий --> */}
         <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
-          onClose={closeAllPopups} 
+          onClose={closeAllPopups}
           onAddPlace={handleAddPlace} />
 
         {/* <!-- Окно редактирования аватара пользователя --> */}
